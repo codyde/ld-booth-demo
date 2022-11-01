@@ -1,0 +1,5 @@
+projects:
+    - key: ld-demo-booth
+      dir: src
+      aliases:
+        - type: camelcase
