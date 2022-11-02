@@ -6,13 +6,13 @@ Parameters:
   StaticAssetsBucket:
     Type: String
     Description: (Optional) Bucket for static assets that live outside of the pipeline (e.g. data for seeding)
-    Default: 'REPONAME'
+    Default: 'ld-demo-1'
   TeamWorkerSourceKey:
     Default: 'Demo-1.zip'
     Description: S3 key for the dummy zip file containing the buildspec_prod.yml and dockerfile
     Type: String
   RepositoryName:
-    Default: 'REPONAME'
+    Default: 'booth-demo-1'
     Description: ''
     Type: String
   
@@ -91,37 +91,7 @@ Resources:
       Name: !Sub ${AWS::StackName}-image-build
       ServiceRole: !Ref CodePipelineServiceRole
   
-  # AppRunnerCanaryService:
-  #   Type: AWS::AppRunner::Service
-  #   Properties:
-  #     SourceConfiguration:
-  #       AuthenticationConfiguration:
-  #           AccessRoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/service-role/AppRunnerECRAccessRole
-  #       ImageRepository:
-  #         ImageRepositoryType: "ECR"
-  #         ImageIdentifier: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${MyAppImage}:latest
-  #         ImageConfiguration:
-  #           Port: "5000"
-  #           RuntimeEnvironmentVariables:
-  #             -
-  #               Name: LD_SERVER_KEY
-  #               Value: !Ref LaunchDarklyServerKey
-  #             - Name: NEXT_PUBLIC_TEAM_ID
-  #               Value: !Ref TeamName
-  #       AutoDeploymentsEnabled: false
-  #     HealthCheckConfiguration:
-  #       Protocol: "TCP"
-  #       Interval: "2"
-  #       Path: '/'
-  #       Timeout: "5"
-  #       HealthyThreshold: "1"
-  #       UnhealthyThreshold: "5"
-  #     InstanceConfiguration:
-  #       Cpu: "1024"
-  #       Memory: "2048"
-  #   DependsOn: PipelineCloudWatchEventRole
-
-
+ 
   MyAppPipeline:
     Type: 'AWS::CodePipeline::Pipeline'
     Properties:
@@ -161,10 +131,6 @@ Resources:
                 ProjectName: !Ref DockerBuildCodeBuildProject
               RunOrder: 1
 
-  # CodePipeline does not automatically create this for you as part of
-  # creation, but this role is for the CWE Hook to trigger CodePipeline once
-  # there's an update in CodeCommit. Otherwise, we have to have CodePipeline
-  # poll for changes, which is slower.
   PipelineCloudWatchEventRole:
     Type: AWS::IAM::Role
     Properties:

@@ -1,30 +1,30 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: reactv2-1
-  namespace: reactv2-1
+  name: demo-4
+  namespace: demo-4
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reactv2-1
-  namespace: reactv2-1
+  name: demo-4
+  namespace: demo-4
   labels:
-    app: reactv2-1
+    app: demo-4
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: reactv2-1
+      app: demo-4
   template:
     metadata:
       labels:
-        app: reactv2-1
+        app: demo-4
     spec:
       serviceAccountName: demo-ldns
       containers:
-        - name: reactv2-1
-          image: codydearkland/ld-demo-reactv2:latest
+        - name: demo-4
+          image: 955116512041.dkr.ecr.us-east-2.amazonaws.com/demo-station-4-myappimage-38tktokdh5dq:latest
           imagePullPolicy: Always
           env:
             - name: AWS_DEFAULT_REGION
@@ -34,18 +34,25 @@ spec:
           ports:
             - name: web
               containerPort: 5000
-              protocol: TCP
+                # protocol: TCP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: reactv2-1
-  name: reactv2-lb
+  namespace: demo-4
+  name: demo-4
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert:  arn:aws:acm:us-west-1:955116512041:certificate/426ddddf-bdad-4da9-8c10-5d32e213b050
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   ports:
-  - port: 80
-    protocol: TCP
+  - name: http
+    port: 80
+    targetPort: 5000
+  - name: https
+    port: 443
     targetPort: 5000
   selector:
-    app: reactv2-1
+    app: demo-4
   type: LoadBalancer

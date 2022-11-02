@@ -1,5 +1,5 @@
 # step 1 as builder
-# FROM public.ecr.aws/docker/library/node:lts-alpine as builder
+#FROM public.ecr.aws/docker/library/node:lts-alpine as builder
 FROM node:lts-alpine as builder
 
 # copy the package.json to install dependencies
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 
-#FROM public.ecr.aws/docker/library/python:3.7-buster
+# FROM public.ecr.aws/docker/library/python:3.7-buster
 FROM python:3.7-buster
 
 COPY requirements.txt /tmp/requirements.txt

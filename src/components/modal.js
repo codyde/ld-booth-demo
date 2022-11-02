@@ -8,13 +8,6 @@ import ls from 'local-storage';
 export default function Modal(code) {
   const [showModal, setShowModal] = React.useState(false);
   const [query, setQuery] = React.useState()
-  const [userkey, setuserkey] = React.useState("anonymous")
-
-  async function setID(){
-    let id = ls.get('LD_User_Key');
-    setuserkey(id)
-    return id
-  }
 
   const debugData = [{
     id: "1",
@@ -24,31 +17,21 @@ export default function Modal(code) {
     id: "2",
     data: "DEBUG-ALSO-EMPTY",
   }]
-  
-
-  useEffect(() => {
-    console.log("update to key detected")
-  }, [userkey])
 
   console.log(code.dbDetails)
 
     async function queryDB() {
-        let id = await setID()
-        console.log("In the modal view ID is "+id)
         const response = await fetch( window.location.protocol +
           "//" +
           window.location.host +
           "/datas")
-        console.log(response.status)
         if (response.status !== 200) {
           const data = debugData
           setQuery(data)
           return data
         } else {
         const data = await response.text()
-        console.log(data)
         setQuery(data)
-        console.log(query)
         return data
       }
     }

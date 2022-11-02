@@ -5,15 +5,15 @@ import { useState, useEffect } from "react";
 
 export default function Adbanner() {
   const { adbanner } = useFlags()
-  console.log(adbanner)
   const [cta, setCTA] = useState("Check out")
   const [academy, setacademy] = useState("LaunchDarkly Academy")
   const [maincss, setmaincss] = useState("text-white")
 
+  const client = useLDClient()
 
   useEffect(() => {
-    console.log("setting CTAs")
     configure()
+    handleClick()
   }, [adbanner])
 
   async function configure() {
@@ -22,11 +22,12 @@ export default function Adbanner() {
     await setmaincss(adbanner['maincss'])
   }
 
-  const client = useLDClient()
+  
 
-  function handleClick() {
+  async function handleClick() {
     console.log("sending client tracking to LD Experiment for CTA")
-    client.track('Academy Clickthrough');
+    await client.track('academy-clickthrough');
+    client.flush()
   }
 
   return (

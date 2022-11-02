@@ -24,7 +24,7 @@ function App() {
       <div className="body grid xl:col-span-1 xl:col-start-1 xl:row-start-1 w-full xl:w-4/5 bg-black-4 place-items-center">
         <img src={ld} className="mx-auto max-h-30 px-8" alt="logo" />
       </div>
-      <div className="body mx-auto grid xl:col-span-5 xl:col-start-1 xl:row-start-1 w-full bg-ldgray place-items-center h-1/5">
+      <div className="body mx-auto grid xl:col-span-5 xl:col-start-1 row-start-1 w-full bg-ldgray place-items-center h-1/5">
         <Adbanner />
         </div>
       {login ? (

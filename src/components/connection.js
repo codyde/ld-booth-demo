@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import Modal from "./modal";
-import ls from 'local-storage';
 
 
 export default function Connection() {
   const { dbinfo } = useFlags();
-  const [userkey, setuserkey] = useState("anonymous")
   const [api1, setapi1] = useState("text-ldred");
   const [api1loc, setapi1loc] = useState("UNKNOWN");
-
-
-  async function setID(){
-    let id = ls.get('LD_User_Key');
-    setuserkey(id)
-    return id
-  }
   
   async function queryAPI() {
-    let id = await setID()
-    console.log(id)
     const ENDPOINT2 =
     window.location.protocol + "//" + window.location.host + "/health";
     const response = await fetch(ENDPOINT2);
@@ -37,10 +26,6 @@ export default function Connection() {
     queryAPI();
     console.log("running useeffect");
   }, [dbinfo]);
-
-  useEffect(() => {
-    console.log("update to key detected")
-  }, [userkey])
 
   return (
     <div className="flex mx-auto w-full h-3/5 space-x-4">
